@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 webAppMulti class
@@ -61,10 +61,10 @@ class webApp:
         resource = request.split(' ', 2)[1]
         for prefix in self.apps.keys():
             if resource.startswith(prefix):
-                print "Running app for prefix: " + prefix + \
-                    ", rest of resource: " + resource[len(prefix):] + "."
+                print("Running app for prefix: " + prefix + \
+                    ", rest of resource: " + resource[len(prefix):] + ".")
                 return (self.apps[prefix], resource[len(prefix):])
-        print "Running default app"
+        print("Running default app")
         return (self.myApp, resource)
 
     def __init__(self, hostname, port, apps):
@@ -85,17 +85,17 @@ class webApp:
         # parse and process methods (in a loop)
 
         while True:
-            print 'Waiting for connections'
+            print('Waiting for connections')
             (recvSocket, address) = mySocket.accept()
-            print 'HTTP request received (going to parse and process):'
-            request = recvSocket.recv(2048)
-            print request
+            print('HTTP request received (going to parse and process):')
+            request = recvSocket.recv(2048).decode('utf-8')
+            print(request)
             (theApp, rest) = self.select(request)
             parsedRequest = theApp.parse(request, rest)
             (returnCode, htmlAnswer) = theApp.process(parsedRequest)
-            print 'Answering back...'
-            recvSocket.send("HTTP/1.1 " + returnCode + " \r\n\r\n"
-                            + htmlAnswer + "\r\n")
+            print('Answering back...')
+            recvSocket.send(bytes("HTTP/1.1 " + returnCode + " \r\n\r\n"
+                            + htmlAnswer + "\r\n", 'utf-8'))
             recvSocket.close()
 
 if __name__ == "__main__":
