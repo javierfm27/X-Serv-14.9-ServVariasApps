@@ -58,7 +58,7 @@ class webApp:
         invoked. If prefix is not found, return app class
         """
 
-        resource = request.split(' ', 2)[1]
+        resource = request.split(' ', 2)[1] #Nos quedamos con el recurso que define la apli
         for prefix in self.apps.keys():
             if resource.startswith(prefix):
                 print("Running app for prefix: " + prefix + \
@@ -90,7 +90,7 @@ class webApp:
             print('HTTP request received (going to parse and process):')
             request = recvSocket.recv(2048).decode('utf-8')
             print(request)
-            (theApp, rest) = self.select(request)
+            (theApp, rest) = self.select(request) #Me devuelve la aplicacion, para usar sus metodos parse y process
             parsedRequest = theApp.parse(request, rest)
             (returnCode, htmlAnswer) = theApp.process(parsedRequest)
             print('Answering back...')
